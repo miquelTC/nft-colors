@@ -5,6 +5,7 @@
   "author": "miqueltrallero.c@gmail.com",
   "dependencies": {
     "@openzeppelin/contracts": "^4.2.0",
+    "@openzeppelin/test-helpers": "^0.5.12",
     "bootstrap": "^5.0.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
