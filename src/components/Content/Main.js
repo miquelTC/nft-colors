@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 const Main = (props) => {
   const [enteredColor, setEnteredColor] = useState('');
+  const [colorIsValid, setColorIsValid] = useState(true);
 
   const enteredColorHandler = (event) => {
     setEnteredColor(event.target.value);
@@ -10,7 +11,11 @@ const Main = (props) => {
   const submissionHandler = (event) => {
     event.preventDefault();
 
-    props.contract.methods.safeMint(enteredColor).send({from: props.account})
+    const isValid = /^#[0-9A-F]{6}$/i.test(enteredColor);
+    setColorIsValid(isValid);
+    
+    if(isValid) {      
+      props.contract.methods.safeMint(enteredColor).send({from: props.account})
       .on('transactionHash', (hash) => {
         props.setIsLoading(true);
         props.setColors(prevState => [...prevState, enteredColor]);
@@ -18,8 +23,11 @@ const Main = (props) => {
       .on('error', (error) => {
         window.alert('Something went wrong when pushing to the blockchain');
         props.setIsLoading(false);
-      }); 
+      });
+    } 
   };
+
+  const inputClass = colorIsValid? "form-control mb-1" : "form-control is-invalid mb-1";
   
   return(
     <div className="container-fluid mt-2">
@@ -30,11 +38,12 @@ const Main = (props) => {
             <form onSubmit={submissionHandler}>
               <input
                 type='text'
-                className='form-control mb-1'
+                className={inputClass}
                 placeholder='e.g. #FFFFFF'
                 value={enteredColor}
                 onChange={enteredColorHandler}
               />
+              {!colorIsValid ? <p className="text-danger"> Please, enter a valid hex color</p> : null}
               <div className="d-grid">
                 <button type='submit' className='btn btn-primary btn-block'>MINT</button>
               </div>
