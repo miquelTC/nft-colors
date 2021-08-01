@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import web3 from './connection/web3';
 
+import web3 from './connection/web3';
 import Navbar from './components/Layout/Navbar';
 import Main from './components/Content/Main';
 import Spinner from './components/Layout/Spinner';
@@ -11,7 +11,6 @@ const App = () => {
   const [contract, setContract] = useState(null);
   const [networkId, setNetworkId] = useState(null);
   const [account, setAccount] = useState(null);
-  const [totalSupply, setTotalSupply] = useState(null);
   const [colors, setColors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);   
   
@@ -49,7 +48,6 @@ const App = () => {
 
         // Get total supply
         const totalSupply = await contract.methods.totalSupply().call();
-        setTotalSupply(totalSupply);
 
         // Load Colors
         for (var i = 1; i <= totalSupply; i++) {
